@@ -28,6 +28,8 @@ export interface ImageAttributes {
 	alt?: string;
 	title?: string;
 	caption?: string;
+	/** Optional URL — when set, the image is wrapped in an anchor at render time */
+	link?: string;
 	mediaId?: string;
 	/** Original image width */
 	width?: number;
@@ -67,6 +69,7 @@ export function ImageDetailPanel({
 	const [alt, setAlt] = React.useState(attributes.alt ?? "");
 	const [caption, setCaption] = React.useState(attributes.caption ?? "");
 	const [title, setTitle] = React.useState(attributes.title ?? "");
+	const [link, setLink] = React.useState(attributes.link ?? "");
 	const [showMediaPicker, setShowMediaPicker] = React.useState(false);
 
 	// Dimension state - default to display dimensions, fall back to original
@@ -126,16 +129,18 @@ export function ImageDetailPanel({
 			alt !== (attributes.alt ?? "") ||
 			caption !== (attributes.caption ?? "") ||
 			title !== (attributes.title ?? "") ||
+			link !== (attributes.link ?? "") ||
 			displayWidth !== originalDisplayWidth ||
 			displayHeight !== originalDisplayHeight
 		);
-	}, [attributes, alt, caption, title, displayWidth, displayHeight]);
+	}, [attributes, alt, caption, title, link, displayWidth, displayHeight]);
 
 	const handleSave = () => {
 		onUpdate({
 			alt: alt || undefined,
 			caption: caption || undefined,
 			title: title || undefined,
+			link: link || undefined,
 			displayWidth,
 			displayHeight,
 		});
@@ -319,6 +324,15 @@ export function ImageDetailPanel({
 						description={t`Shown when hovering over the image.`}
 					/>
 
+					<Input
+						label={t`Link URL`}
+						type="url"
+						value={link}
+						onChange={(e) => setLink(e.target.value)}
+						placeholder={t`https://example.com or /page`}
+						description={t`When set, the image becomes a clickable link to this URL.`}
+					/>
+
 					{/* Source URL - only show for external images (no mediaId) */}
 					{!attributes.mediaId && attributes.src && (
 						<div>
@@ -482,6 +496,15 @@ export function ImageDetailPanel({
 						onChange={(e) => setTitle(e.target.value)}
 						placeholder={t`Optional tooltip on hover`}
 						description={t`Shown when hovering over the image.`}
+					/>
+
+					<Input
+						label={t`Link URL`}
+						type="url"
+						value={link}
+						onChange={(e) => setLink(e.target.value)}
+						placeholder={t`https://example.com or /page`}
+						description={t`When set, the image becomes a clickable link to this URL.`}
 					/>
 
 					{/* Source URL - only show for external images (no mediaId) */}

@@ -278,6 +278,7 @@ function convertImage(node: ProseMirrorNode): PortableTextImageBlock {
 	const src = typeof attrs?.src === "string" ? attrs.src : "";
 	const alt = typeof attrs?.alt === "string" ? attrs.alt : undefined;
 	const title = typeof attrs?.title === "string" ? attrs.title : undefined;
+	const link = typeof attrs?.link === "string" ? attrs.link : undefined;
 	const width = typeof attrs?.width === "number" ? attrs.width : undefined;
 	const height = typeof attrs?.height === "number" ? attrs.height : undefined;
 	const displayWidth = typeof attrs?.displayWidth === "number" ? attrs.displayWidth : undefined;
@@ -296,6 +297,7 @@ function convertImage(node: ProseMirrorNode): PortableTextImageBlock {
 		},
 		alt: alt || undefined,
 		caption: title || undefined,
+		link: link || undefined,
 		width: width || undefined,
 		height: height || undefined,
 		displayWidth: displayWidth || undefined,

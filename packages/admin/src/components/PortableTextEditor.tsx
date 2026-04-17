@@ -12,6 +12,15 @@
  */
 
 import { Button, Dialog, Input } from "@cloudflare/kumo";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import {
+	SortableContext,
+	verticalListSortingStrategy,
+	useSortable,
+	arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { Element } from "@emdash-cms/blocks";
 import { useFloating, offset, flip, shift, autoUpdate } from "@floating-ui/react";
 import type { MessageDescriptor } from "@lingui/core";
@@ -42,6 +51,11 @@ import {
 	CodeBlock,
 	Stack,
 	Eye,
+	Plus,
+	Trash,
+	DotsSixVertical,
+	CaretDown,
+	CaretRight,
 	type Icon,
 } from "@phosphor-icons/react";
 import { X } from "@phosphor-icons/react";
@@ -259,6 +273,7 @@ function convertPMNode(node: {
 				},
 				alt: attrStr(attrs.alt),
 				caption: attrStr(attrs.caption) ?? attrStr(attrs.title),
+				link: attrStr(attrs.link),
 				width: attrNum(attrs.width),
 				height: attrNum(attrs.height),
 				displayWidth: attrNum(attrs.displayWidth),
@@ -525,6 +540,7 @@ function convertPTBlock(block: PortableTextBlock): unknown {
 					alt: imageBlock.alt || "",
 					title: imageBlock.caption || "",
 					caption: imageBlock.caption || "",
+					link: imageBlock.link || undefined,
 					mediaId: imageBlock.asset._ref,
 					width: imageBlock.width,
 					height: imageBlock.height,
@@ -1052,7 +1068,7 @@ function PluginBlockModal({
 					/>
 				</div>
 				<form onSubmit={handleSubmit}>
-					<div className="py-4 space-y-4">
+					<div className="py-4 space-y-4 max-h-[70vh] overflow-y-auto -mx-1 px-1">
 						{hasFields ? (
 							block.fields!.map((field) => (
 								<BlockKitField
@@ -1119,6 +1135,7 @@ function BlockKitField({
 						/>
 					) : (
 						<Input
+							className="w-full"
 							type="text"
 							placeholder={placeholder}
 							value={typeof value === "string" ? value : ""}
@@ -1162,9 +1179,346 @@ function BlockKitField({
 				</div>
 			);
 		}
+		case "media_picker": {
+			return <BlockKitMediaPicker field={field} value={value} onChange={onChange} />;
+		}
+		case "repeater": {
+			return (
+				<BlockKitRepeater field={field} pluginId={pluginId} value={value} onChange={onChange} />
+			);
+		}
 		default:
 			return <div className="text-sm text-kumo-subtle">Unknown field type: {field.type}</div>;
 	}
+}
+
+function BlockKitMediaPicker({
+	field,
+	value,
+	onChange,
+}: {
+	field: Extract<Element, { type: "media_picker" }>;
+	value: unknown;
+	onChange: (actionId: string, value: unknown) => void;
+}) {
+	const [pickerOpen, setPickerOpen] = React.useState(false);
+	const url = typeof value === "string" && value.length > 0 ? value : "";
+	const mimeTypeFilter = field.mime_type_filter ?? "image/";
+
+	const handleSelect = (item: MediaItem) => {
+		const isLocalProvider = !item.provider || item.provider === "local";
+		const nextUrl = isLocalProvider
+			? `/_emdash/api/media/file/${item.storageKey || item.id}`
+			: item.url;
+		onChange(field.action_id, nextUrl);
+	};
+
+	return (
+		<div>
+			<label className="text-sm font-medium mb-1.5 block">{field.label}</label>
+			{url ? (
+				<div className="relative group">
+					<img
+						src={url}
+						alt=""
+						className="max-h-40 w-full rounded-md border border-kumo-line object-contain bg-kumo-muted"
+					/>
+					<div className="absolute top-2 end-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+						<Button
+							type="button"
+							size="sm"
+							variant="secondary"
+							onClick={() => setPickerOpen(true)}
+						>
+							Change
+						</Button>
+						<Button
+							type="button"
+							shape="square"
+							variant="destructive"
+							className="h-8 w-8"
+							onClick={() => onChange(field.action_id, "")}
+							aria-label="Remove"
+						>
+							<X className="h-4 w-4" />
+						</Button>
+					</div>
+				</div>
+			) : (
+				<Button
+					type="button"
+					variant="outline"
+					className="w-full h-24 border-dashed"
+					onClick={() => setPickerOpen(true)}
+				>
+					<div className="flex flex-col items-center gap-1.5 text-kumo-subtle">
+						<ImageIcon className="h-6 w-6" />
+						<span className="text-sm">{field.placeholder ?? "Select media"}</span>
+					</div>
+				</Button>
+			)}
+			<MediaPickerModal
+				open={pickerOpen}
+				onOpenChange={setPickerOpen}
+				onSelect={handleSelect}
+				mimeTypeFilter={mimeTypeFilter}
+				title={`Select ${field.label}`}
+			/>
+		</div>
+	);
+}
+
+// ── Repeater support ─────────────────────────────────────────────────────────
+
+type RepeaterItem = Record<string, unknown> & { _key: string };
+
+function ensureKeys(items: unknown[]): RepeaterItem[] {
+	return items.map((item, i) => {
+		const obj = (typeof item === "object" && item !== null ? item : {}) as Record<string, unknown>;
+		return { ...obj, _key: (obj._key as string) || `item-${i}-${Date.now()}` };
+	});
+}
+
+function stripKeys(items: RepeaterItem[]): Record<string, unknown>[] {
+	return items.map(({ _key, ...rest }) => rest);
+}
+
+function BlockKitRepeater({
+	field,
+	pluginId,
+	value,
+	onChange,
+}: {
+	field: Extract<Element, { type: "repeater" }>;
+	pluginId?: string;
+	value: unknown;
+	onChange: (actionId: string, value: unknown) => void;
+}) {
+	// Accept legacy JSON-string values (from pre-repeater blocks) — parse once on read.
+	const rawItems = React.useMemo(() => {
+		if (Array.isArray(value)) return value;
+		if (typeof value === "string" && value.trim()) {
+			try {
+				const parsed = JSON.parse(value);
+				return Array.isArray(parsed) ? parsed : [];
+			} catch {
+				return [];
+			}
+		}
+		return [];
+	}, [value]);
+
+	const [items, setItems] = React.useState<RepeaterItem[]>(() => ensureKeys(rawItems));
+	const [expanded, setExpanded] = React.useState<Set<string>>(new Set());
+
+	React.useEffect(() => {
+		setItems(ensureKeys(rawItems));
+	}, [rawItems]);
+
+	const minItems = field.min_items ?? 0;
+	const maxItems = field.max_items;
+	const canAdd = maxItems === undefined || items.length < maxItems;
+	const canRemove = items.length > minItems;
+	const itemLabel = field.item_label ?? "Item";
+
+	const emit = (next: RepeaterItem[]) => {
+		setItems(next);
+		onChange(field.action_id, stripKeys(next));
+	};
+
+	const handleAdd = () => {
+		if (!canAdd) return;
+		const newItem: RepeaterItem = { _key: `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` };
+		for (const sf of field.fields) {
+			newItem[sf.action_id] = sf.type === "toggle" ? false : "";
+		}
+		setExpanded((prev) => {
+			const next = new Set(prev);
+			next.add(newItem._key);
+			return next;
+		});
+		emit([...items, newItem]);
+	};
+
+	const handleRemove = (key: string) => {
+		if (!canRemove) return;
+		emit(items.filter((it) => it._key !== key));
+	};
+
+	const handleItemChange = (key: string, subActionId: string, subValue: unknown) => {
+		emit(items.map((it) => (it._key === key ? { ...it, [subActionId]: subValue } : it)));
+	};
+
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event;
+		if (!over || active.id === over.id) return;
+		const oldIndex = items.findIndex((it) => it._key === active.id);
+		const newIndex = items.findIndex((it) => it._key === over.id);
+		if (oldIndex === -1 || newIndex === -1) return;
+		emit(arrayMove(items, oldIndex, newIndex));
+	};
+
+	const toggleExpanded = (key: string) => {
+		setExpanded((prev) => {
+			const next = new Set(prev);
+			if (next.has(key)) next.delete(key);
+			else next.add(key);
+			return next;
+		});
+	};
+
+	return (
+		<div className="space-y-2">
+			<div className="flex items-center justify-between">
+				<label className="text-sm font-medium">
+					{field.label}
+					{items.length > 0 && (
+						<span className="ms-2 text-kumo-subtle font-normal">({items.length})</span>
+					)}
+				</label>
+				{canAdd && (
+					<Button variant="outline" size="sm" icon={<Plus />} onClick={handleAdd} type="button">
+						{`Add ${itemLabel}`}
+					</Button>
+				)}
+			</div>
+
+			{items.length === 0 ? (
+				<div className="border-2 border-dashed rounded-lg p-6 text-center text-kumo-subtle">
+					<p className="text-sm">No items yet</p>
+					{canAdd && (
+						<Button
+							variant="outline"
+							size="sm"
+							className="mt-2"
+							icon={<Plus />}
+							onClick={handleAdd}
+							type="button"
+						>
+							{`Add ${itemLabel}`}
+						</Button>
+					)}
+				</div>
+			) : (
+				<DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+					<SortableContext
+						items={items.map((it) => it._key)}
+						strategy={verticalListSortingStrategy}
+					>
+						<div className="space-y-2">
+							{items.map((item, index) => (
+								<BlockKitRepeaterItem
+									key={item._key}
+									item={item}
+									index={index}
+									fields={field.fields}
+									pluginId={pluginId}
+									isCollapsed={!expanded.has(item._key)}
+									onToggleCollapse={() => toggleExpanded(item._key)}
+									onRemove={canRemove ? () => handleRemove(item._key) : undefined}
+									onChange={(subActionId, v) => handleItemChange(item._key, subActionId, v)}
+								/>
+							))}
+						</div>
+					</SortableContext>
+				</DndContext>
+			)}
+		</div>
+	);
+}
+
+function BlockKitRepeaterItem({
+	item,
+	index,
+	fields,
+	pluginId,
+	isCollapsed,
+	onToggleCollapse,
+	onRemove,
+	onChange,
+}: {
+	item: RepeaterItem;
+	index: number;
+	fields: Extract<Element, { type: "repeater" }>["fields"];
+	pluginId?: string;
+	isCollapsed: boolean;
+	onToggleCollapse: () => void;
+	onRemove?: () => void;
+	onChange: (subActionId: string, value: unknown) => void;
+}) {
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+		id: item._key,
+	});
+
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+	};
+
+	// Summary label: value of the first text_input sub-field, falling back to "Item N".
+	const summaryField = fields.find((f) => f.type === "text_input");
+	const summaryValue =
+		summaryField && typeof item[summaryField.action_id] === "string"
+			? (item[summaryField.action_id] as string)
+			: "";
+	const summaryLabel = summaryValue || `Item ${index + 1}`;
+
+	return (
+		<div
+			ref={setNodeRef}
+			style={style}
+			className={cn(
+				"border border-kumo-line rounded-lg bg-kumo-base",
+				isDragging && "opacity-50 ring-2 ring-kumo-brand",
+			)}
+		>
+			<div
+				className="flex items-center gap-2 px-3 py-2 border-b border-kumo-line cursor-pointer"
+				onClick={onToggleCollapse}
+			>
+				<DotsSixVertical
+					className="h-4 w-4 text-kumo-subtle cursor-grab shrink-0"
+					{...attributes}
+					{...listeners}
+					onClick={(e) => e.stopPropagation()}
+				/>
+				{isCollapsed ? (
+					<CaretRight className="h-4 w-4 text-kumo-subtle shrink-0" />
+				) : (
+					<CaretDown className="h-4 w-4 text-kumo-subtle shrink-0" />
+				)}
+				<span className="text-sm font-medium flex-1 truncate">{summaryLabel}</span>
+				{onRemove && (
+					<Button
+						variant="ghost"
+						shape="square"
+						type="button"
+						onClick={(e) => {
+							e.stopPropagation();
+							onRemove();
+						}}
+						aria-label={`Remove item ${index + 1}`}
+					>
+						<Trash className="h-3.5 w-3.5 text-kumo-danger" />
+					</Button>
+				)}
+			</div>
+
+			{!isCollapsed && (
+				<div className="p-3 space-y-3">
+					{fields.map((sf) => (
+						<BlockKitField
+							key={sf.action_id}
+							field={sf}
+							pluginId={pluginId}
+							value={item[sf.action_id]}
+							onChange={(actionId, v) => onChange(actionId, v)}
+						/>
+					))}
+				</div>
+			)}
+		</div>
+	);
 }
 
 /**

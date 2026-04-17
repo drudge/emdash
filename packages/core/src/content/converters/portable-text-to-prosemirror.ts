@@ -373,6 +373,7 @@ function convertImage(block: PortableTextImageBlock): ProseMirrorNode {
 			src: block.asset.url || block.asset._ref,
 			alt: block.alt || "",
 			title: block.caption || "",
+			link: block.link || undefined,
 			mediaId: block.asset._ref,
 			provider: block.asset.provider,
 			width: block.width,

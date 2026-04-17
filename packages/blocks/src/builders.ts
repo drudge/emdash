@@ -13,6 +13,8 @@ import type {
 	ContextBlock,
 	DateInputElement,
 	RadioElement,
+	RepeaterElement,
+	RepeaterSubField,
 	DividerBlock,
 	Element,
 	FieldsBlock,
@@ -20,6 +22,7 @@ import type {
 	FormField,
 	HeaderBlock,
 	ImageBlock,
+	MediaPickerElement,
 	MeterBlock,
 	NumberInputElement,
 	SecretInputElement,
@@ -325,6 +328,48 @@ function radio(
 	};
 }
 
+function repeater(
+	actionId: string,
+	label: string,
+	fields: RepeaterSubField[],
+	opts?: {
+		itemLabel?: string;
+		minItems?: number;
+		maxItems?: number;
+		initialValue?: Array<Record<string, unknown>>;
+	},
+): RepeaterElement {
+	return {
+		type: "repeater",
+		action_id: actionId,
+		label,
+		fields,
+		...(opts?.itemLabel !== undefined && { item_label: opts.itemLabel }),
+		...(opts?.minItems !== undefined && { min_items: opts.minItems }),
+		...(opts?.maxItems !== undefined && { max_items: opts.maxItems }),
+		...(opts?.initialValue !== undefined && { initial_value: opts.initialValue }),
+	};
+}
+
+function mediaPicker(
+	actionId: string,
+	label: string,
+	opts?: {
+		mimeTypeFilter?: string;
+		initialValue?: string;
+		placeholder?: string;
+	},
+): MediaPickerElement {
+	return {
+		type: "media_picker",
+		action_id: actionId,
+		label,
+		...(opts?.mimeTypeFilter !== undefined && { mime_type_filter: opts.mimeTypeFilter }),
+		...(opts?.initialValue !== undefined && { initial_value: opts.initialValue }),
+		...(opts?.placeholder !== undefined && { placeholder: opts.placeholder }),
+	};
+}
+
 function timeseriesChart(opts: {
 	blockId?: string;
 	series: ChartSeries[];
@@ -429,4 +474,6 @@ export const elements = {
 	combobox,
 	dateInput,
 	radio,
+	mediaPicker,
+	repeater,
 };

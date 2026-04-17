@@ -59,6 +59,8 @@ export interface PortableTextImageBlock {
 	};
 	alt?: string;
 	caption?: string;
+	/** Optional URL — when set, the image is rendered inside an anchor */
+	link?: string;
 	/** Original image width */
 	width?: number;
 	/** Original image height */

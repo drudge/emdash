@@ -28,6 +28,7 @@ declare module "@tiptap/react" {
 				alt?: string;
 				title?: string;
 				caption?: string;
+				link?: string;
 				mediaId?: string;
 				/** Provider ID for external media (e.g., "cloudflare-images") */
 				provider?: string;
@@ -73,6 +74,7 @@ function ImageNodeView({ node, updateAttributes, selected, deleteNode, editor }:
 		alt: node.attrs.alt,
 		title: node.attrs.title,
 		caption: node.attrs.caption,
+		link: node.attrs.link,
 		mediaId: node.attrs.mediaId,
 		width: node.attrs.width,
 		height: node.attrs.height,
@@ -304,6 +306,9 @@ export const ImageExtension = Node.create({
 			caption: {
 				default: null,
 			},
+			link: {
+				default: null,
+			},
 			mediaId: {
 				default: null,
 			},
@@ -350,6 +355,7 @@ export const ImageExtension = Node.create({
 					alt?: string;
 					title?: string;
 					caption?: string;
+					link?: string;
 					mediaId?: string;
 					provider?: string;
 					width?: number;
