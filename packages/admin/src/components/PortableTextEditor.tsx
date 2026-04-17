@@ -567,17 +567,31 @@ function convertPTBlock(block: PortableTextBlock): unknown {
 			// Treat unknown block types as plugin blocks (embeds)
 			// These have an id field (or url for backwards compat) for the embed source,
 			// OR Block Kit field data stored as top-level keys (e.g., formId for forms plugin)
-			const { _type, _key, id, url, ...rest } = block as Record<string, unknown>;
+			const { _type, _key, ...rest } = block as Record<string, unknown>;
 			// Filter out _-prefixed keys to prevent accumulation across edit cycles
-			const data = Object.fromEntries(Object.entries(rest).filter(([k]) => !k.startsWith("_")));
-			const hasFieldData = Object.keys(data).length > 0;
-			if (id || url || hasFieldData) {
+			const filtered = Object.fromEntries(Object.entries(rest).filter(([k]) => !k.startsWith("_")));
+			const { id, url, ...extra } = filtered;
+			const hasExtraFields = Object.keys(extra).length > 0;
+			if (hasExtraFields) {
+				// Field-based plugin block: keep url as a real data field so it round-trips.
+				const data = { ...(url !== undefined ? { url } : {}), ...extra };
 				return {
 					type: "pluginBlock",
 					attrs: {
 						blockType: _type,
-						id: id || url || "",
+						id: typeof id === "string" ? id : "",
 						data,
+					},
+				};
+			}
+			if (id || url) {
+				// Legacy URL-only embed: hoist url into id for backwards compat.
+				return {
+					type: "pluginBlock",
+					attrs: {
+						blockType: _type,
+						id: (typeof id === "string" && id) || (typeof url === "string" ? url : "") || "",
+						data: {},
 					},
 				};
 			}

@@ -235,11 +235,18 @@ function PluginBlockNodeView({
 		window.open(id, "_blank", "noopener,noreferrer");
 	};
 
-	const displayId = id
-		? getDisplayId(id, blockType)
-		: Object.values(data)
-				.filter((v) => typeof v === "string" && v.length > 0)
-				.join(", ") || blockType;
+	const namedDisplay =
+		(typeof data.name === "string" && data.name) ||
+		(typeof data.title === "string" && data.title) ||
+		(typeof data.label === "string" && data.label) ||
+		null;
+	const displayId = namedDisplay
+		? namedDisplay
+		: id
+			? getDisplayId(id, blockType)
+			: Object.values(data)
+					.filter((v) => typeof v === "string" && v.length > 0)
+					.join(", ") || blockType;
 
 	return (
 		<NodeViewWrapper
