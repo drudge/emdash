@@ -80,9 +80,9 @@ export const GET: APIRoute = async ({ params, locals, url }) => {
 			const slug = entry.slug || entry.id;
 			const basePath = col.urlPattern
 				? col.urlPattern
-						.replace(SLUG_PLACEHOLDER, encodeURIComponent(slug))
-						.replace(ID_PLACEHOLDER, encodeURIComponent(entry.id))
-				: `/${encodeURIComponent(col.collection)}/${encodeURIComponent(slug)}`;
+						.replace(SLUG_PLACEHOLDER, encodePathSegments(slug))
+						.replace(ID_PLACEHOLDER, encodePathSegments(entry.id))
+				: `/${encodePathSegments(col.collection)}/${encodePathSegments(slug)}`;
 
 			// Mirror loader.ts: prefix with /<locale> when i18n is on and the row
 			// isn't the default locale (or prefixDefaultLocale is enabled).
@@ -126,4 +126,13 @@ function escapeXml(str: string): string {
 		.replace(GT_RE, "&gt;")
 		.replace(QUOT_RE, "&quot;")
 		.replace(APOS_RE, "&apos;");
+}
+
+/**
+ * Percent-encode a value that may contain `/` as a path, preserving the
+ * separators. `encodeURIComponent` alone would turn `faq/products` into
+ * `faq%2Fproducts`, which breaks multi-segment slugs.
+ */
+function encodePathSegments(value: string): string {
+	return value.split("/").map(encodeURIComponent).join("/");
 }
