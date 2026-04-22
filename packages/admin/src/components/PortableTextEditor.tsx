@@ -12,6 +12,15 @@
  */
 
 import { Button, Dialog, Input } from "@cloudflare/kumo";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import {
+	SortableContext,
+	verticalListSortingStrategy,
+	useSortable,
+	arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { Element } from "@emdash-cms/blocks";
 import { useFloating, offset, flip, shift, autoUpdate } from "@floating-ui/react";
 import type { MessageDescriptor } from "@lingui/core";
@@ -42,6 +51,11 @@ import {
 	CodeBlock,
 	Stack,
 	Eye,
+	Plus,
+	Trash,
+	DotsSixVertical,
+	CaretDown,
+	CaretRight,
 	type Icon,
 } from "@phosphor-icons/react";
 import { X } from "@phosphor-icons/react";
@@ -551,17 +565,31 @@ function convertPTBlock(block: PortableTextBlock): unknown {
 			// Treat unknown block types as plugin blocks (embeds)
 			// These have an id field (or url for backwards compat) for the embed source,
 			// OR Block Kit field data stored as top-level keys (e.g., formId for forms plugin)
-			const { _type, _key, id, url, ...rest } = block as Record<string, unknown>;
+			const { _type, _key, ...rest } = block as Record<string, unknown>;
 			// Filter out _-prefixed keys to prevent accumulation across edit cycles
-			const data = Object.fromEntries(Object.entries(rest).filter(([k]) => !k.startsWith("_")));
-			const hasFieldData = Object.keys(data).length > 0;
-			if (id || url || hasFieldData) {
+			const filtered = Object.fromEntries(Object.entries(rest).filter(([k]) => !k.startsWith("_")));
+			const { id, url, ...extra } = filtered;
+			const hasExtraFields = Object.keys(extra).length > 0;
+			if (hasExtraFields) {
+				// Field-based plugin block: keep url as a real data field so it round-trips.
+				const data = { ...(url !== undefined ? { url } : {}), ...extra };
 				return {
 					type: "pluginBlock",
 					attrs: {
 						blockType: _type,
-						id: id || url || "",
+						id: typeof id === "string" ? id : "",
 						data,
+					},
+				};
+			}
+			if (id || url) {
+				// Legacy URL-only embed: hoist url into id for backwards compat.
+				return {
+					type: "pluginBlock",
+					attrs: {
+						blockType: _type,
+						id: (typeof id === "string" && id) || (typeof url === "string" ? url : "") || "",
+						data: {},
 					},
 				};
 			}
@@ -1052,7 +1080,7 @@ function PluginBlockModal({
 					/>
 				</div>
 				<form onSubmit={handleSubmit}>
-					<div className="py-4 space-y-4">
+					<div className="py-4 space-y-4 max-h-[70vh] overflow-y-auto -mx-1 px-1">
 						{hasFields ? (
 							block.fields!.map((field) => (
 								<BlockKitField
@@ -1119,6 +1147,7 @@ function BlockKitField({
 						/>
 					) : (
 						<Input
+							className="w-full"
 							type="text"
 							placeholder={placeholder}
 							value={typeof value === "string" ? value : ""}
@@ -1162,9 +1191,286 @@ function BlockKitField({
 				</div>
 			);
 		}
+		case "repeater": {
+			return (
+				<BlockKitRepeater field={field} pluginId={pluginId} value={value} onChange={onChange} />
+			);
+		}
 		default:
 			return <div className="text-sm text-kumo-subtle">Unknown field type: {field.type}</div>;
 	}
+}
+
+// ── Repeater support ─────────────────────────────────────────────────────────
+
+type RepeaterItem = Record<string, unknown> & { _key: string };
+
+function ensureKeys(items: unknown[]): RepeaterItem[] {
+	return items.map((item, i) => {
+		const obj = (typeof item === "object" && item !== null ? item : {}) as Record<string, unknown>;
+		return { ...obj, _key: (obj._key as string) || `item-${i}-${Date.now()}` };
+	});
+}
+
+function stripKeys(items: RepeaterItem[]): Record<string, unknown>[] {
+	return items.map(({ _key, ...rest }) => rest);
+}
+
+function BlockKitRepeater({
+	field,
+	pluginId,
+	value,
+	onChange,
+}: {
+	field: Extract<Element, { type: "repeater" }>;
+	pluginId?: string;
+	value: unknown;
+	onChange: (actionId: string, value: unknown) => void;
+}) {
+	const { t } = useLingui();
+	// Accept legacy JSON-string values (from pre-repeater blocks) — parse once on read.
+	const rawItems = React.useMemo(() => {
+		if (Array.isArray(value)) return value;
+		if (typeof value === "string" && value.trim()) {
+			try {
+				const parsed = JSON.parse(value);
+				return Array.isArray(parsed) ? parsed : [];
+			} catch {
+				return [];
+			}
+		}
+		return [];
+	}, [value]);
+
+	const [items, setItems] = React.useState<RepeaterItem[]>(() => ensureKeys(rawItems));
+	const [expanded, setExpanded] = React.useState<Set<string>>(new Set());
+
+	// Preserve each item's _key by position so round-trips through onChange
+	// (which strips _key) don't remount children and flip them back to
+	// collapsed on every keystroke.
+	React.useEffect(() => {
+		setItems((prev) =>
+			rawItems.map((item, i) => {
+				const obj = (typeof item === "object" && item !== null ? item : {}) as Record<
+					string,
+					unknown
+				>;
+				const existingKey = (obj._key as string) || prev[i]?._key;
+				return {
+					...obj,
+					_key: existingKey || `item-${i}-${Date.now()}`,
+				};
+			}),
+		);
+	}, [rawItems]);
+
+	const minItems = field.min_items ?? 0;
+	const maxItems = field.max_items;
+	const canAdd = maxItems === undefined || items.length < maxItems;
+	const canRemove = items.length > minItems;
+	const itemLabel = field.item_label ?? t`Item`;
+
+	const emit = (next: RepeaterItem[]) => {
+		setItems(next);
+		onChange(field.action_id, stripKeys(next));
+	};
+
+	const handleAdd = () => {
+		if (!canAdd) return;
+		const newItem: RepeaterItem = {
+			_key: `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+		};
+		for (const sf of field.fields) {
+			newItem[sf.action_id] = sf.type === "toggle" ? false : "";
+		}
+		setExpanded((prev) => {
+			const next = new Set(prev);
+			next.add(newItem._key);
+			return next;
+		});
+		emit([...items, newItem]);
+	};
+
+	const handleRemove = (key: string) => {
+		if (!canRemove) return;
+		emit(items.filter((it) => it._key !== key));
+	};
+
+	const handleItemChange = (key: string, subActionId: string, subValue: unknown) => {
+		emit(items.map((it) => (it._key === key ? { ...it, [subActionId]: subValue } : it)));
+	};
+
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event;
+		if (!over || active.id === over.id) return;
+		const oldIndex = items.findIndex((it) => it._key === active.id);
+		const newIndex = items.findIndex((it) => it._key === over.id);
+		if (oldIndex === -1 || newIndex === -1) return;
+		emit(arrayMove(items, oldIndex, newIndex));
+	};
+
+	const toggleExpanded = (key: string) => {
+		setExpanded((prev) => {
+			const next = new Set(prev);
+			if (next.has(key)) next.delete(key);
+			else next.add(key);
+			return next;
+		});
+	};
+
+	return (
+		<div className="space-y-2">
+			<div className="flex items-center justify-between">
+				<label className="text-sm font-medium">
+					{field.label}
+					{items.length > 0 && (
+						<span className="ms-2 text-kumo-subtle font-normal">({items.length})</span>
+					)}
+				</label>
+				{canAdd && (
+					<Button variant="outline" size="sm" icon={<Plus />} onClick={handleAdd} type="button">
+						{t`Add ${itemLabel}`}
+					</Button>
+				)}
+			</div>
+
+			{items.length === 0 ? (
+				<div className="border-2 border-dashed rounded-lg p-6 text-center text-kumo-subtle">
+					<p className="text-sm">{t`No items yet`}</p>
+					{canAdd && (
+						<Button
+							variant="outline"
+							size="sm"
+							className="mt-2"
+							icon={<Plus />}
+							onClick={handleAdd}
+							type="button"
+						>
+							{t`Add ${itemLabel}`}
+						</Button>
+					)}
+				</div>
+			) : (
+				<DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+					<SortableContext
+						items={items.map((it) => it._key)}
+						strategy={verticalListSortingStrategy}
+					>
+						<div className="space-y-2">
+							{items.map((item, index) => (
+								<BlockKitRepeaterItem
+									key={item._key}
+									item={item}
+									index={index}
+									fields={field.fields}
+									pluginId={pluginId}
+									isCollapsed={!expanded.has(item._key)}
+									onToggleCollapse={() => toggleExpanded(item._key)}
+									onRemove={canRemove ? () => handleRemove(item._key) : undefined}
+									onChange={(subActionId, v) => handleItemChange(item._key, subActionId, v)}
+								/>
+							))}
+						</div>
+					</SortableContext>
+				</DndContext>
+			)}
+		</div>
+	);
+}
+
+function BlockKitRepeaterItem({
+	item,
+	index,
+	fields,
+	pluginId,
+	isCollapsed,
+	onToggleCollapse,
+	onRemove,
+	onChange,
+}: {
+	item: RepeaterItem;
+	index: number;
+	fields: Extract<Element, { type: "repeater" }>["fields"];
+	pluginId?: string;
+	isCollapsed: boolean;
+	onToggleCollapse: () => void;
+	onRemove?: () => void;
+	onChange: (subActionId: string, value: unknown) => void;
+}) {
+	const { t } = useLingui();
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+		id: item._key,
+	});
+
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+	};
+
+	// Summary label: value of the first text_input sub-field, falling back to "Item N".
+	const summaryField = fields.find((f) => f.type === "text_input");
+	const summaryValue =
+		summaryField && typeof item[summaryField.action_id] === "string"
+			? (item[summaryField.action_id] as string)
+			: "";
+	const summaryLabel = summaryValue || t`Item ${index + 1}`;
+
+	return (
+		<div
+			ref={setNodeRef}
+			style={style}
+			className={cn(
+				"border border-kumo-line rounded-lg bg-kumo-base",
+				isDragging && "opacity-50 ring-2 ring-kumo-brand",
+			)}
+		>
+			<div
+				className="flex items-center gap-2 px-3 py-2 border-b border-kumo-line cursor-pointer"
+				onClick={onToggleCollapse}
+			>
+				<DotsSixVertical
+					className="h-4 w-4 text-kumo-subtle cursor-grab shrink-0"
+					{...attributes}
+					{...listeners}
+					onClick={(e) => e.stopPropagation()}
+				/>
+				{isCollapsed ? (
+					<CaretRight className="h-4 w-4 text-kumo-subtle shrink-0" />
+				) : (
+					<CaretDown className="h-4 w-4 text-kumo-subtle shrink-0" />
+				)}
+				<span className="text-sm font-medium flex-1 truncate">{summaryLabel}</span>
+				{onRemove && (
+					<Button
+						variant="ghost"
+						shape="square"
+						type="button"
+						onClick={(e) => {
+							e.stopPropagation();
+							onRemove();
+						}}
+						aria-label={t`Remove item ${index + 1}`}
+					>
+						<Trash className="h-3.5 w-3.5 text-kumo-danger" />
+					</Button>
+				)}
+			</div>
+
+			{!isCollapsed && (
+				<div className="p-3 space-y-3">
+					{fields.map((sf) => (
+						<BlockKitField
+							key={sf.action_id}
+							field={sf}
+							pluginId={pluginId}
+							value={item[sf.action_id]}
+							onChange={(actionId, v) => onChange(actionId, v)}
+						/>
+					))}
+				</div>
+			)}
+		</div>
+	);
 }
 
 /**

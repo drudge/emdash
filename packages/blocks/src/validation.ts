@@ -27,6 +27,7 @@ const ELEMENT_TYPES = new Set([
 	"radio",
 	"date_input",
 	"combobox",
+	"repeater",
 ]);
 
 const COLUMN_FORMATS = new Set(["text", "badge", "relative_time", "number", "code"]);
@@ -445,6 +446,43 @@ function validateElement(value: unknown, path: string, errors: ValidationError[]
 				errors.push({
 					path: `${path}.placeholder`,
 					message: "Field 'placeholder' must be a string",
+				});
+			}
+			break;
+		}
+		case "repeater": {
+			if (!Array.isArray(value.fields)) {
+				errors.push({
+					path: `${path}.fields`,
+					message: "Required field 'fields' must be an array",
+				});
+			} else {
+				for (let i = 0; i < value.fields.length; i++) {
+					validateElement(value.fields[i], `${path}.fields[${i}]`, errors);
+				}
+			}
+			if (value.item_label !== undefined && typeof value.item_label !== "string") {
+				errors.push({
+					path: `${path}.item_label`,
+					message: "Field 'item_label' must be a string",
+				});
+			}
+			if (value.min_items !== undefined && typeof value.min_items !== "number") {
+				errors.push({
+					path: `${path}.min_items`,
+					message: "Field 'min_items' must be a number",
+				});
+			}
+			if (value.max_items !== undefined && typeof value.max_items !== "number") {
+				errors.push({
+					path: `${path}.max_items`,
+					message: "Field 'max_items' must be a number",
+				});
+			}
+			if (value.initial_value !== undefined && !Array.isArray(value.initial_value)) {
+				errors.push({
+					path: `${path}.initial_value`,
+					message: "Field 'initial_value' must be an array",
 				});
 			}
 			break;

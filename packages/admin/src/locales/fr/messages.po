@@ -442,6 +442,11 @@ msgstr "Actif"
 msgid "Add"
 msgstr "Ajouter"
 
+#: packages/admin/src/components/PortableTextEditor.tsx:1332
+#: packages/admin/src/components/PortableTextEditor.tsx:1349
+msgid "Add {itemLabel}"
+msgstr ""
+
 #: packages/admin/src/components/TaxonomySidebar.tsx:235
 msgid "Add {label}"
 msgstr "Ajouter {label}"
@@ -834,7 +839,7 @@ msgid "Browse themes and preview them with your own content."
 msgstr "Parcourez les thèmes et prévisualisez-les avec votre propre contenu."
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:101
-#: packages/admin/src/components/PortableTextEditor.tsx:729
+#: packages/admin/src/components/PortableTextEditor.tsx:757
 msgid "Bullet List"
 msgstr "Liste à puces"
 
@@ -1044,7 +1049,7 @@ msgid "Code"
 msgstr "Code"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:93
-#: packages/admin/src/components/PortableTextEditor.tsx:759
+#: packages/admin/src/components/PortableTextEditor.tsx:787
 msgid "Code Block"
 msgstr "Bloc de code"
 
@@ -1124,7 +1129,7 @@ msgstr "Connecté {0}"
 #: packages/admin/src/components/comments/CommentDetail.tsx:103
 #: packages/admin/src/components/comments/CommentInbox.tsx:300
 #: packages/admin/src/components/Dashboard.tsx:164
-#: packages/admin/src/components/PortableTextEditor.tsx:1431
+#: packages/admin/src/components/PortableTextEditor.tsx:1737
 #: packages/admin/src/components/SectionEditor.tsx:174
 #: packages/admin/src/components/Sidebar.tsx:412
 msgid "Content"
@@ -1249,7 +1254,7 @@ msgstr "Nombre"
 msgid "Create"
 msgstr "Créer"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:730
+#: packages/admin/src/components/PortableTextEditor.tsx:758
 msgid "Create a bullet list"
 msgstr "Créer une liste à puces"
 
@@ -1258,7 +1263,7 @@ msgstr "Créer une liste à puces"
 msgid "Create a new {0}"
 msgstr "Créer un nouveau {0}"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:740
+#: packages/admin/src/components/PortableTextEditor.tsx:768
 msgid "Create a numbered list"
 msgstr "Créer une liste numérotée"
 
@@ -1696,7 +1701,7 @@ msgstr "Affiché sous l’image sous forme de légende visible."
 msgid "Distraction-free mode (⌘⇧\\)"
 msgstr "Mode sans distraction (⌘⇧\\)"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:769
+#: packages/admin/src/components/PortableTextEditor.tsx:797
 msgid "Divider"
 msgstr "Séparateur"
 
@@ -1882,11 +1887,11 @@ msgid "Email verified!"
 msgstr "E-mail vérifié !"
 
 #. placeholder {0}: block.label
-#: packages/admin/src/components/PortableTextEditor.tsx:1443
+#: packages/admin/src/components/PortableTextEditor.tsx:1749
 msgid "Embed a {0}"
 msgstr "Intégrer un {0}"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1446
+#: packages/admin/src/components/PortableTextEditor.tsx:1752
 msgid "Embeds"
 msgstr "Intégrations"
 
@@ -2255,17 +2260,17 @@ msgid "Group (optional)"
 msgstr "Groupe (facultatif)"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:61
-#: packages/admin/src/components/PortableTextEditor.tsx:699
+#: packages/admin/src/components/PortableTextEditor.tsx:727
 msgid "Heading 1"
 msgstr "Titre 1"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:69
-#: packages/admin/src/components/PortableTextEditor.tsx:709
+#: packages/admin/src/components/PortableTextEditor.tsx:737
 msgid "Heading 2"
 msgstr "Titre 2"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:77
-#: packages/admin/src/components/PortableTextEditor.tsx:719
+#: packages/admin/src/components/PortableTextEditor.tsx:747
 msgid "Heading 3"
 msgstr "Titre 3"
 
@@ -2325,7 +2330,7 @@ msgid "If an account exists for <0>{email}</0>, we've sent a sign-in link."
 msgstr "Si un compte existe pour <0>{email}</0>, nous vous avons envoyé un lien de connexion."
 
 #: packages/admin/src/components/FieldEditor.tsx:200
-#: packages/admin/src/components/PortableTextEditor.tsx:1413
+#: packages/admin/src/components/PortableTextEditor.tsx:1719
 msgid "Image"
 msgstr "Image"
 
@@ -2453,23 +2458,23 @@ msgstr "Incompatible"
 msgid "Insert"
 msgstr "Insérer"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:750
+#: packages/admin/src/components/PortableTextEditor.tsx:778
 msgid "Insert a blockquote"
 msgstr "Insérer une citation"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:760
+#: packages/admin/src/components/PortableTextEditor.tsx:788
 msgid "Insert a code block"
 msgstr "Insérer un bloc de code"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:770
+#: packages/admin/src/components/PortableTextEditor.tsx:798
 msgid "Insert a horizontal rule"
 msgstr "Insérer un séparateur horizontal"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1428
+#: packages/admin/src/components/PortableTextEditor.tsx:1734
 msgid "Insert a reusable section"
 msgstr "Insérer une section réutilisable"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1414
+#: packages/admin/src/components/PortableTextEditor.tsx:1720
 msgid "Insert an image"
 msgstr "Insérer une image"
 
@@ -2536,7 +2541,12 @@ msgstr "Lien d'invitation créé"
 msgid "Invite User"
 msgstr "Inviter un utilisateur"
 
+#: packages/admin/src/components/PortableTextEditor.tsx:1271
+msgid "Item"
+msgstr ""
+
 #. placeholder {0}: index + 1
+#: packages/admin/src/components/PortableTextEditor.tsx:1416
 #: packages/admin/src/components/RepeaterField.tsx:232
 msgid "Item {0}"
 msgstr "Article {0}"
@@ -2583,7 +2593,7 @@ msgstr "Libellé"
 msgid "Language"
 msgstr "Langue"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:700
+#: packages/admin/src/components/PortableTextEditor.tsx:728
 msgid "Large section heading"
 msgstr "Titre principal"
 
@@ -2838,7 +2848,7 @@ msgstr "Longueur maximale"
 msgid "Max Value"
 msgstr "Valeur maximale"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1417
+#: packages/admin/src/components/PortableTextEditor.tsx:1723
 #: packages/admin/src/components/Sidebar.tsx:185
 #: packages/admin/src/components/WordPressImport.tsx:1164
 msgid "Media"
@@ -2878,7 +2888,7 @@ msgstr "Lecture des fichiers multimédias"
 msgid "Media Write"
 msgstr "Écriture des fichiers multimédias"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:710
+#: packages/admin/src/components/PortableTextEditor.tsx:738
 msgid "Medium section heading"
 msgstr "Titre secondaire"
 
@@ -3192,6 +3202,7 @@ msgstr "Aucun champ à comparer"
 msgid "No headings in document"
 msgstr "Aucun titre dans le document"
 
+#: packages/admin/src/components/PortableTextEditor.tsx:1339
 #: packages/admin/src/components/RepeaterField.tsx:158
 msgid "No items yet"
 msgstr "Aucun élément pour l'instant"
@@ -3264,7 +3275,7 @@ msgstr "Aucune activité récente"
 msgid "No redirects yet"
 msgstr "Aucune redirection pour l'instant"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:940
+#: packages/admin/src/components/PortableTextEditor.tsx:968
 msgid "No results"
 msgstr "Aucun résultat"
 
@@ -3321,7 +3332,7 @@ msgid "Number of posts to show per page on list views"
 msgstr "Nombre d'articles à afficher par page dans les vues de liste"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:109
-#: packages/admin/src/components/PortableTextEditor.tsx:739
+#: packages/admin/src/components/PortableTextEditor.tsx:767
 msgid "Numbered List"
 msgstr "Liste numérotée"
 
@@ -3697,7 +3708,7 @@ msgid "Quick create byline"
 msgstr "Création rapide d'un auteur"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:85
-#: packages/admin/src/components/PortableTextEditor.tsx:749
+#: packages/admin/src/components/PortableTextEditor.tsx:777
 msgid "Quote"
 msgstr "Citation"
 
@@ -3808,6 +3819,7 @@ msgid "Remove Image?"
 msgstr "Supprimer l'image ?"
 
 #. placeholder {0}: index + 1
+#: packages/admin/src/components/PortableTextEditor.tsx:1452
 #: packages/admin/src/components/RepeaterField.tsx:268
 msgid "Remove item {0}"
 msgstr "Supprimer l'élément {0}"
@@ -4205,7 +4217,7 @@ msgstr "Recherche..."
 msgid "Searchable"
 msgstr "Interrogeable"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1427
+#: packages/admin/src/components/PortableTextEditor.tsx:1733
 msgid "Section"
 msgstr "Section"
 
@@ -4572,7 +4584,7 @@ msgstr "Slug"
 msgid "Slug copied to clipboard"
 msgstr "Slug copié dans le presse-papiers"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:720
+#: packages/admin/src/components/PortableTextEditor.tsx:748
 msgid "Small section heading"
 msgstr "Petit titre"
 

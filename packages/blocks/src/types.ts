@@ -96,6 +96,37 @@ export interface RadioElement {
 	initial_value?: string;
 }
 
+/**
+ * Sub-field types allowed inside a RepeaterElement. Excludes `repeater`
+ * (no nesting) and `button` (not a data field).
+ */
+export type RepeaterSubField =
+	| TextInputElement
+	| NumberInputElement
+	| SelectElement
+	| ToggleElement
+	| CheckboxElement
+	| DateInputElement
+	| ComboboxElement
+	| RadioElement;
+
+/**
+ * Array-of-objects field. Renders as a list of collapsible cards with inline
+ * add/remove and drag-and-drop reordering. Sub-fields are scalar Block Kit
+ * elements keyed by their `action_id`.
+ */
+export interface RepeaterElement {
+	type: "repeater";
+	action_id: string;
+	label: string;
+	/** Singular label used in the UI (e.g. "FAQ" → "Add FAQ"). */
+	item_label?: string;
+	fields: RepeaterSubField[];
+	min_items?: number;
+	max_items?: number;
+	initial_value?: Array<Record<string, unknown>>;
+}
+
 export type Element =
 	| ButtonElement
 	| TextInputElement
@@ -106,7 +137,8 @@ export type Element =
 	| CheckboxElement
 	| DateInputElement
 	| ComboboxElement
-	| RadioElement;
+	| RadioElement
+	| RepeaterElement;
 
 // ── Form Fields (elements + optional condition) ──────────────────────────────
 
