@@ -44,6 +44,8 @@ export function renderElement(
 			);
 		case "combobox":
 			return <ComboboxElementComponent element={element} onAction={onAction} onChange={onChange} />;
+		case "repeater":
+			return null;
 		default: {
 			const _exhaustive: never = element;
 			return null;

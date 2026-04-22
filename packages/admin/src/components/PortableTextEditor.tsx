@@ -1424,31 +1424,34 @@ function BlockKitRepeaterItem({
 				isDragging && "opacity-50 ring-2 ring-kumo-brand",
 			)}
 		>
-			<div
-				className="flex items-center gap-2 px-3 py-2 border-b border-kumo-line cursor-pointer"
-				onClick={onToggleCollapse}
-			>
-				<DotsSixVertical
-					className="h-4 w-4 text-kumo-subtle cursor-grab shrink-0"
+			<div className="flex items-center gap-2 px-3 py-2 border-b border-kumo-line">
+				<span
+					className="inline-flex h-4 w-4 text-kumo-subtle cursor-grab shrink-0"
+					aria-label={t`Drag to reorder`}
 					{...attributes}
 					{...listeners}
-					onClick={(e) => e.stopPropagation()}
-				/>
-				{isCollapsed ? (
-					<CaretRight className="h-4 w-4 text-kumo-subtle shrink-0" />
-				) : (
-					<CaretDown className="h-4 w-4 text-kumo-subtle shrink-0" />
-				)}
-				<span className="text-sm font-medium flex-1 truncate">{summaryLabel}</span>
+				>
+					<DotsSixVertical className="h-4 w-4" />
+				</span>
+				<button
+					type="button"
+					className="flex items-center gap-2 flex-1 min-w-0 text-left cursor-pointer"
+					onClick={onToggleCollapse}
+					aria-expanded={!isCollapsed}
+				>
+					{isCollapsed ? (
+						<CaretRight className="h-4 w-4 text-kumo-subtle shrink-0" />
+					) : (
+						<CaretDown className="h-4 w-4 text-kumo-subtle shrink-0" />
+					)}
+					<span className="text-sm font-medium flex-1 truncate">{summaryLabel}</span>
+				</button>
 				{onRemove && (
 					<Button
 						variant="ghost"
 						shape="square"
 						type="button"
-						onClick={(e) => {
-							e.stopPropagation();
-							onRemove();
-						}}
+						onClick={onRemove}
 						aria-label={t`Remove item ${index + 1}`}
 					>
 						<Trash className="h-3.5 w-3.5 text-kumo-danger" />
