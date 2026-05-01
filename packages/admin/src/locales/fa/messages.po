@@ -446,7 +446,7 @@ msgid "Add"
 msgstr "افزودن"
 
 #. placeholder {0}: field.item_label
-#: packages/admin/src/components/PortableTextEditor.tsx:1321
+#: packages/admin/src/components/PortableTextEditor.tsx:1354
 msgid "Add {0}"
 msgstr ""
 
@@ -495,7 +495,7 @@ msgstr "افزودن فیلدها"
 msgid "Add First Item"
 msgstr "افزودن اولین مورد"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1321
+#: packages/admin/src/components/PortableTextEditor.tsx:1354
 msgid "Add item"
 msgstr ""
 
@@ -620,8 +620,8 @@ msgstr "آیا از قبل حساب کاربری دارید؟"
 msgid "Also delete plugin storage data"
 msgstr "داده‌های ذخیره‌سازی افزونه نیز حذف شود"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:298
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:463
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:309
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:491
 #: packages/admin/src/components/MediaDetailPanel.tsx:202
 msgid "Alt Text"
 msgstr "متن جایگزین"
@@ -851,7 +851,7 @@ msgid "Browse themes and preview them with your own content."
 msgstr "قالب‌ها را انتخاب کرده، و با محتوای خود پیش‌نمایش آن‌ها را ببینید"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:101
-#: packages/admin/src/components/PortableTextEditor.tsx:757
+#: packages/admin/src/components/PortableTextEditor.tsx:790
 msgid "Bullet List"
 msgstr "لیست نشانه‌دار"
 
@@ -886,7 +886,7 @@ msgstr "می‌تواند محتوا را مشاهده کند"
 #: packages/admin/src/components/ContentList.tsx:560
 #: packages/admin/src/components/ContentList.tsx:631
 #: packages/admin/src/components/ContentPickerModal.tsx:253
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:516
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:561
 #: packages/admin/src/components/FieldEditor.tsx:645
 #: packages/admin/src/components/MediaDetailPanel.tsx:234
 #: packages/admin/src/components/MediaPickerModal.tsx:581
@@ -929,8 +929,8 @@ msgstr "قابلیت‌ها"
 msgid "Capability consent"
 msgstr "رضایت قابلیت"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:306
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:471
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:317
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:499
 #: packages/admin/src/components/MediaDetailPanel.tsx:210
 msgid "Caption"
 msgstr "زیرنویس"
@@ -1009,10 +1009,10 @@ msgstr "روی لینک ایمیل کلیک کنید تا وارد شوید."
 #: packages/admin/src/components/ContentPickerModal.tsx:120
 #: packages/admin/src/components/ContentPickerModal.tsx:126
 #: packages/admin/src/components/ContentPickerModal.tsx:130
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:205
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:207
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:366
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:368
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:216
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:218
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:394
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:396
 #: packages/admin/src/components/FieldEditor.tsx:334
 #: packages/admin/src/components/FieldEditor.tsx:340
 #: packages/admin/src/components/FieldEditor.tsx:344
@@ -1066,7 +1066,7 @@ msgid "Code"
 msgstr "کد"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:93
-#: packages/admin/src/components/PortableTextEditor.tsx:787
+#: packages/admin/src/components/PortableTextEditor.tsx:820
 msgid "Code Block"
 msgstr "بلوک کد"
 
@@ -1146,7 +1146,7 @@ msgstr "متصل شده در {0}"
 #: packages/admin/src/components/comments/CommentDetail.tsx:103
 #: packages/admin/src/components/comments/CommentInbox.tsx:293
 #: packages/admin/src/components/Dashboard.tsx:164
-#: packages/admin/src/components/PortableTextEditor.tsx:1813
+#: packages/admin/src/components/PortableTextEditor.tsx:1846
 #: packages/admin/src/components/SectionEditor.tsx:191
 #: packages/admin/src/components/Sidebar.tsx:412
 msgid "Content"
@@ -1271,7 +1271,7 @@ msgstr "تعداد"
 msgid "Create"
 msgstr "ساخت جدید"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:758
+#: packages/admin/src/components/PortableTextEditor.tsx:791
 msgid "Create a bullet list"
 msgstr "ساخت لیست نشانه‌دار"
 
@@ -1280,7 +1280,7 @@ msgstr "ساخت لیست نشانه‌دار"
 msgid "Create a new {0}"
 msgstr "ساخت {0} جدید"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:768
+#: packages/admin/src/components/PortableTextEditor.tsx:801
 msgid "Create a numbered list"
 msgstr "ساخت لیست شماره‌دار"
 
@@ -1612,8 +1612,8 @@ msgstr "دمو"
 msgid "Deny"
 msgstr "رد"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:301
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:466
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:312
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:494
 #: packages/admin/src/components/MediaDetailPanel.tsx:205
 msgid "Describe this image for accessibility"
 msgstr "این تصویر را برای دسترسی‌پذیری توصیف کنید"
@@ -1716,13 +1716,13 @@ msgstr "نام نمایشی"
 msgid "Display name for admin interface"
 msgstr "نام نمایشی برای رابط مدیریت"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:247
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:412
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:258
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:440
 msgid "Display Size"
 msgstr "اندازه نمایش"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:310
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:475
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:321
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:503
 msgid "Displayed below the image as a visible caption."
 msgstr "به‌عنوان زیرنویس قابل مشاهده زیر تصویر نمایش داده می‌شود."
 
@@ -1730,7 +1730,7 @@ msgstr "به‌عنوان زیرنویس قابل مشاهده زیر تصویر
 msgid "Distraction-free mode (⌘⇧\\)"
 msgstr "حالت بدون حواس‌پرتی (⌘⇧\\)"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:797
+#: packages/admin/src/components/PortableTextEditor.tsx:830
 msgid "Divider"
 msgstr "جداکننده"
 
@@ -1789,7 +1789,7 @@ msgstr "پیش‌نویس‌ها"
 msgid "Drag and drop or click to browse (.xml)"
 msgstr "بکشید و رها کنید یا برای مرور کلیک کنید (.xml)"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1497
+#: packages/admin/src/components/PortableTextEditor.tsx:1530
 msgid "Drag to reorder"
 msgstr ""
 
@@ -1920,11 +1920,11 @@ msgid "Email verified!"
 msgstr "ایمیل تأیید شد!"
 
 #. placeholder {0}: block.label
-#: packages/admin/src/components/PortableTextEditor.tsx:1826
+#: packages/admin/src/components/PortableTextEditor.tsx:1859
 msgid "Embed a {0}"
 msgstr "جاسازی {0}"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1829
+#: packages/admin/src/components/PortableTextEditor.tsx:1862
 msgid "Embeds"
 msgstr "جاسازی‌ها"
 
@@ -2297,22 +2297,22 @@ msgid "Group (optional)"
 msgstr "گروه (اختیاری)"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:61
-#: packages/admin/src/components/PortableTextEditor.tsx:727
+#: packages/admin/src/components/PortableTextEditor.tsx:760
 msgid "Heading 1"
 msgstr "سرفصل ۱"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:69
-#: packages/admin/src/components/PortableTextEditor.tsx:737
+#: packages/admin/src/components/PortableTextEditor.tsx:770
 msgid "Heading 2"
 msgstr "سرفصل ۲"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:77
-#: packages/admin/src/components/PortableTextEditor.tsx:747
+#: packages/admin/src/components/PortableTextEditor.tsx:780
 msgid "Heading 3"
 msgstr "سرفصل ۳"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:282
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:447
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:293
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:475
 msgid "Height"
 msgstr "ارتفاع"
 
@@ -2353,6 +2353,11 @@ msgstr "چگونه گذرواژه برنامه بسازیم"
 msgid "https://example.com or /about"
 msgstr "https://example.com یا /about"
 
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:339
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:521
+msgid "https://example.com or /page"
+msgstr ""
+
 #: packages/admin/src/components/MarketplaceBrowse.tsx:242
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:143
 msgid "Icon blurred due to image audit"
@@ -2367,7 +2372,7 @@ msgid "If an account exists for <0>{email}</0>, we've sent a sign-in link."
 msgstr "اگر حساب کاربری برای <0>{email}</0> وجود داشته باشد، لینک ورود ارسال شده است."
 
 #: packages/admin/src/components/FieldEditor.tsx:200
-#: packages/admin/src/components/PortableTextEditor.tsx:1795
+#: packages/admin/src/components/PortableTextEditor.tsx:1828
 msgid "Image"
 msgstr "تصویر"
 
@@ -2375,8 +2380,8 @@ msgstr "تصویر"
 msgid "Image from media library"
 msgstr "تصویر از کتابخانه رسانه"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:203
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:364
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:214
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:392
 msgid "Image Settings"
 msgstr "تنظیمات تصویر"
 
@@ -2495,23 +2500,23 @@ msgstr "ناسازگار"
 msgid "Insert"
 msgstr "درج"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:778
+#: packages/admin/src/components/PortableTextEditor.tsx:811
 msgid "Insert a blockquote"
 msgstr "درج نقل‌قول"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:788
+#: packages/admin/src/components/PortableTextEditor.tsx:821
 msgid "Insert a code block"
 msgstr "درج بلوک کد"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:798
+#: packages/admin/src/components/PortableTextEditor.tsx:831
 msgid "Insert a horizontal rule"
 msgstr "درج خط افقی"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1810
+#: packages/admin/src/components/PortableTextEditor.tsx:1843
 msgid "Insert a reusable section"
 msgstr "درج بخش قابل استفاده مجدد"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1796
+#: packages/admin/src/components/PortableTextEditor.tsx:1829
 msgid "Insert an image"
 msgstr "درج تصویر"
 
@@ -2579,7 +2584,7 @@ msgid "Invite User"
 msgstr "دعوت کاربر"
 
 #. placeholder {0}: index + 1
-#: packages/admin/src/components/PortableTextEditor.tsx:1483
+#: packages/admin/src/components/PortableTextEditor.tsx:1516
 #: packages/admin/src/components/RepeaterField.tsx:234
 msgid "Item {0}"
 msgstr "مورد {0}"
@@ -2626,7 +2631,7 @@ msgstr "برچسب"
 msgid "Language"
 msgstr "زبان"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:728
+#: packages/admin/src/components/PortableTextEditor.tsx:761
 msgid "Large section heading"
 msgstr "سرتیتر بزرگ بخش"
 
@@ -2688,6 +2693,11 @@ msgstr "لینک منقضی شده"
 #: packages/admin/src/components/FieldEditor.tsx:213
 msgid "Link to another content item"
 msgstr "لینک به محتوای دیگر"
+
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:335
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:517
+msgid "Link URL"
+msgstr ""
 
 #. placeholder {0}: user.oauthAccounts.length
 #: packages/admin/src/components/users/UserDetail.tsx:276
@@ -2789,10 +2799,10 @@ msgstr "در حال بارگذاری..."
 msgid "Locale"
 msgstr "منطقه"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:271
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:272
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:436
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:437
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:282
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:283
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:464
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:465
 msgid "Lock aspect ratio"
 msgstr "قفل نسبت تصویر"
 
@@ -2883,7 +2893,7 @@ msgstr "حداکثر طول"
 msgid "Max Value"
 msgstr "حداکثر مقدار"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1799
+#: packages/admin/src/components/PortableTextEditor.tsx:1832
 #: packages/admin/src/components/Sidebar.tsx:185
 #: packages/admin/src/components/WordPressImport.tsx:1164
 msgid "Media"
@@ -2923,7 +2933,7 @@ msgstr "خواندن رسانه"
 msgid "Media Write"
 msgstr "نوشتن رسانه"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:738
+#: packages/admin/src/components/PortableTextEditor.tsx:771
 msgid "Medium section heading"
 msgstr "سرتیتر متوسط بخش"
 
@@ -3242,7 +3252,7 @@ msgstr "فیلدی برای مقایسه وجود ندارد"
 msgid "No headings in document"
 msgstr "سرتیتری در سند نیست"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1406
+#: packages/admin/src/components/PortableTextEditor.tsx:1439
 #: packages/admin/src/components/RepeaterField.tsx:160
 msgid "No items yet"
 msgstr "هنوز موردی نیست"
@@ -3315,7 +3325,7 @@ msgstr "فعالیت اخیری نیست"
 msgid "No redirects yet"
 msgstr "هنوز    تغییر مسیری نیست"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:968
+#: packages/admin/src/components/PortableTextEditor.tsx:1001
 msgid "No results"
 msgstr "بدون نتایج"
 
@@ -3372,7 +3382,7 @@ msgid "Number of posts to show per page on list views"
 msgstr "تعداد نوشته‌ها برای نمایش در هر صفحه در نمای لیستی"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:109
-#: packages/admin/src/components/PortableTextEditor.tsx:767
+#: packages/admin/src/components/PortableTextEditor.tsx:800
 msgid "Numbered List"
 msgstr "لیست شماره‌دار"
 
@@ -3401,10 +3411,12 @@ msgstr "فقط حروف کوچک، اعداد و خط تیره"
 msgid "Oops!"
 msgstr "اوه!"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:333
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:334
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:498
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:499
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:346
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:361
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:362
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:528
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:543
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:544
 msgid "Open in new tab"
 msgstr "باز کردن در زبانه جدید"
 
@@ -3412,8 +3424,8 @@ msgstr "باز کردن در زبانه جدید"
 msgid "Open WordPress Profile"
 msgstr "باز کردن نمایه وردپرس"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:309
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:474
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:320
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:502
 msgid "Optional caption displayed below the image"
 msgstr "زیرنویس اختیاری نمایش داده شده زیر تصویر"
 
@@ -3425,8 +3437,8 @@ msgstr "زیرنویس اختیاری برای نمایش"
 msgid "Optional description"
 msgstr "توضیحات اختیاری"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:318
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:483
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:329
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:511
 msgid "Optional tooltip on hover"
 msgstr "راهنمای اختیاری هنگام قرارگیری ماوس"
 
@@ -3458,8 +3470,8 @@ msgstr "یا مستقیماً بارگذاری کنید"
 msgid "Order saved"
 msgstr "ترتیب ذخیره شد"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:235
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:400
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:246
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:428
 msgid "Original:"
 msgstr "اصلی:"
 
@@ -3744,7 +3756,7 @@ msgid "Quick create byline"
 msgstr "ساخت سریع نگارنده"
 
 #: packages/admin/src/components/editor/BlockMenu.tsx:85
-#: packages/admin/src/components/PortableTextEditor.tsx:777
+#: packages/admin/src/components/PortableTextEditor.tsx:810
 msgid "Quote"
 msgstr "نقل‌قول"
 
@@ -3822,7 +3834,7 @@ msgstr "ثبت‌نام لغو شد یا زمان آن به پایان رسید.
 
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:76
 #: packages/admin/src/components/ContentEditor.tsx:1806
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:177
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:188
 #: packages/admin/src/components/settings/GeneralSettings.tsx:213
 #: packages/admin/src/components/settings/GeneralSettings.tsx:257
 #: packages/admin/src/components/settings/PasskeyItem.tsx:187
@@ -3850,17 +3862,17 @@ msgstr "حذف دامنه؟"
 msgid "Remove image"
 msgstr "حذف تصویر"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:346
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:512
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:374
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:557
 msgid "Remove Image"
 msgstr "حذف تصویر"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:175
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:186
 msgid "Remove Image?"
 msgstr "حذف تصویر؟"
 
 #. placeholder {0}: index + 1
-#: packages/admin/src/components/PortableTextEditor.tsx:1522
+#: packages/admin/src/components/PortableTextEditor.tsx:1555
 #: packages/admin/src/components/RepeaterField.tsx:270
 msgid "Remove item {0}"
 msgstr "حذف مورد {0}"
@@ -3877,11 +3889,11 @@ msgstr "حذف شاه‌کلید؟"
 msgid "Remove sub-field"
 msgstr "حذف زیرفیلد"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:176
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:187
 msgid "Remove this image from the document?"
 msgstr "این تصویر را از سند حذف کنید؟"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:178
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:189
 #: packages/admin/src/components/settings/PasskeyItem.tsx:210
 msgid "Removing..."
 msgstr "در حال حذف..."
@@ -3907,9 +3919,9 @@ msgstr "تکرارشونده"
 msgid "Repeating group of fields"
 msgstr "گروه تکرارشونده فیلدها"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:191
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:226
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:389
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:202
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:237
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:417
 msgid "Replace Image"
 msgstr "جایگزینی تصویر"
 
@@ -3934,8 +3946,8 @@ msgstr "الزامی"
 msgid "Required fields:"
 msgstr "فیلدهای الزامی:"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:302
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:467
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:313
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:495
 msgid "Required for accessibility. Describes the image for screen readers."
 msgstr "برای دسترسی‌پذیری الزامی است. تصویر را برای صفحه‌خوان‌ها توصیف می‌کند."
 
@@ -3952,8 +3964,8 @@ msgstr "ارسال مجدد ایمیل"
 msgid "Resend in {resendCooldown}s"
 msgstr "ارسال مجدد در {resendCooldown} ثانیه"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:254
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:419
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:265
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:447
 msgid "Reset to original"
 msgstr "بازنشانی به حالت اصلی"
 
@@ -4060,8 +4072,8 @@ msgid "Same window"
 msgstr "همین پنجره"
 
 #: packages/admin/src/components/ContentEditor.tsx:1944
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:349
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:519
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:377
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:564
 #: packages/admin/src/components/MediaDetailPanel.tsx:241
 #: packages/admin/src/components/MenuEditor.tsx:442
 #: packages/admin/src/components/Redirects.tsx:184
@@ -4264,7 +4276,7 @@ msgstr "جستجو…"
 msgid "Searchable"
 msgstr "قابل جستجو"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:1809
+#: packages/admin/src/components/PortableTextEditor.tsx:1842
 msgid "Section"
 msgstr "بخش"
 
@@ -4483,8 +4495,8 @@ msgstr "تنظیمات سئو ذخیره شد"
 msgid "SEO Title"
 msgstr "عنوان سئو"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:290
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:455
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:301
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:483
 msgid "Set a custom display size for this image instance."
 msgstr "یک اندازه نمایش سفارشی برای این نمونه تصویر تنظیم کنید."
 
@@ -4531,8 +4543,8 @@ msgstr "متن کوتاه"
 msgid "Show token"
 msgstr "نمایش توکن"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:319
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:484
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:330
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:512
 msgid "Shown when hovering over the image."
 msgstr "هنگام قرارگیری ماوس روی تصویر نمایش داده می‌شود."
 
@@ -4651,7 +4663,7 @@ msgstr "اسلاگ"
 msgid "Slug copied to clipboard"
 msgstr "نامک در کلیپ‌بورد کپی شد"
 
-#: packages/admin/src/components/PortableTextEditor.tsx:748
+#: packages/admin/src/components/PortableTextEditor.tsx:781
 msgid "Small section heading"
 msgstr "سرتیتر کوچک بخش"
 
@@ -4690,8 +4702,8 @@ msgid "Sort themes"
 msgstr "مرتب‌سازی قالب‌ها"
 
 #: packages/admin/src/components/ContentTypeList.tsx:100
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:325
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:490
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:353
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:535
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:216
 #: packages/admin/src/components/PluginManager.tsx:434
 #: packages/admin/src/components/Redirects.tsx:447
@@ -4969,8 +4981,8 @@ msgstr "منطقه زمانی برای نمایش تاریخ‌ها (مثلاً 
 msgid "Title"
 msgstr "عنوان"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:315
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:480
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:326
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:508
 msgid "Title (Tooltip)"
 msgstr "عنوان (راهنما)"
 
@@ -5134,10 +5146,10 @@ msgstr "ناشناخته"
 msgid "Unknown role"
 msgstr "نقش ناشناخته"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:271
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:272
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:436
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:437
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:282
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:283
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:464
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:465
 msgid "Unlock aspect ratio"
 msgstr "باز کردن قفل نسبت تصویر"
 
@@ -5471,6 +5483,11 @@ msgstr "هنگام درون‌ریزی چه اتفاقی می‌افتد:"
 msgid "What will happen when you import"
 msgstr "هنگام درون‌ریزی چه اتفاقی خواهد افتاد"
 
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:340
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:522
+msgid "When set, the image becomes a clickable link to this URL."
+msgstr ""
+
 #: packages/admin/src/components/ContentTypeEditor.tsx:118
 msgid "When the entry was created"
 msgstr "زمان ساخت ورودی"
@@ -5497,8 +5514,8 @@ msgstr "عدد صحیح"
 msgid "Widgets"
 msgstr "ابزارک‌ها"
 
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:260
-#: packages/admin/src/components/editor/ImageDetailPanel.tsx:425
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:271
+#: packages/admin/src/components/editor/ImageDetailPanel.tsx:453
 msgid "Width"
 msgstr "عرض"
 
