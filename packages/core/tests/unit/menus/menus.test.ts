@@ -551,4 +551,126 @@ describe("Navigation Menus", () => {
 			expect(sanitizeHref(undefined)).toBe("#");
 		});
 	});
+
+	describe("handleMenuSetItems", () => {
+		// The MCP boundary uses Zod with `.nonnegative()` so callers can't
+		// pass a negative `parentIndex` from there. Direct handler callers
+		// (REST routes, future programmatic users) bypass that guard, so
+		// the handler enforces the same constraint.
+
+		async function setupMenu(name: string): Promise<string> {
+			const id = ulid();
+			await db.insertInto("_emdash_menus").values({ id, name, label: name }).execute();
+			return id;
+		}
+
+		it("rejects negative parentIndex", async () => {
+			const { handleMenuSetItems } = await import("../../../src/api/handlers/menus.js");
+			await setupMenu("main");
+			const result = await handleMenuSetItems(db, "main", [
+				{ label: "A", type: "custom", customUrl: "/a", parentIndex: -1 },
+			]);
+			expect(result.success).toBe(false);
+			expect(result.error?.code).toBe("VALIDATION_ERROR");
+			expect(result.error?.message).toMatch(/parentIndex/);
+		});
+
+		it("rejects parentIndex >= current index (forward reference)", async () => {
+			const { handleMenuSetItems } = await import("../../../src/api/handlers/menus.js");
+			await setupMenu("main");
+			const result = await handleMenuSetItems(db, "main", [
+				{ label: "A", type: "custom", customUrl: "/a" },
+				{ label: "B", type: "custom", customUrl: "/b", parentIndex: 5 },
+			]);
+			expect(result.success).toBe(false);
+			expect(result.error?.code).toBe("VALIDATION_ERROR");
+			expect(result.error?.message).toMatch(/parentIndex/);
+		});
+
+		it("returns NOT_FOUND for missing menu and leaves unrelated items untouched", async () => {
+			const { handleMenuSetItems } = await import("../../../src/api/handlers/menus.js");
+
+			// Seed a real menu with items so the rollback assertion has
+			// something to potentially clobber. A regression where the
+			// handler deleted ALL items before the existence check (the
+			// shape of the bug we want to guard against) would wipe these.
+			const otherMenuId = await setupMenu("real");
+			const otherItemId = ulid();
+			await db
+				.insertInto("_emdash_menu_items")
+				.values({
+					id: otherItemId,
+					menu_id: otherMenuId,
+					sort_order: 0,
+					type: "custom",
+					custom_url: "/x",
+					label: "X",
+				})
+				.execute();
+
+			const result = await handleMenuSetItems(db, "ghost", [
+				{ label: "A", type: "custom", customUrl: "/a" },
+			]);
+			expect(result.success).toBe(false);
+			expect(result.error?.code).toBe("NOT_FOUND");
+
+			// Unrelated menu's item survives — confirms the transaction
+			// rolled back (or never started its destructive phase).
+			const items = await db.selectFrom("_emdash_menu_items").selectAll().execute();
+			expect(items).toHaveLength(1);
+			expect(items[0]?.id).toBe(otherItemId);
+			expect(items[0]?.menu_id).toBe(otherMenuId);
+		});
+	});
+
+	describe("handleMenuCreate (translationOf)", () => {
+		it("clones items inheriting the source's translation_group", async () => {
+			const { handleMenuCreate } = await import("../../../src/api/handlers/menus.js");
+
+			const sourceId = ulid();
+			await db
+				.insertInto("_emdash_menus")
+				.values({
+					id: sourceId,
+					name: "primary",
+					label: "Primary",
+					locale: "en",
+					translation_group: sourceId,
+				})
+				.execute();
+			const sourceItemId = ulid();
+			await db
+				.insertInto("_emdash_menu_items")
+				.values({
+					id: sourceItemId,
+					menu_id: sourceId,
+					sort_order: 0,
+					type: "custom",
+					custom_url: "/",
+					label: "Home",
+					locale: "en",
+					translation_group: sourceItemId,
+				})
+				.execute();
+
+			const result = await handleMenuCreate(db, {
+				name: "primary",
+				label: "Principal",
+				locale: "es",
+				translationOf: sourceId,
+			});
+			expect(result.success).toBe(true);
+
+			const cloned = await db
+				.selectFrom("_emdash_menu_items")
+				.selectAll()
+				.where("locale", "=", "es")
+				.executeTakeFirstOrThrow();
+
+			// Cloned item inherits source's translation_group so EN/ES rows
+			// identify as the same logical nav entry across translations.
+			expect(cloned.id).not.toBe(sourceItemId);
+			expect(cloned.translation_group).toBe(sourceItemId);
+		});
+	});
 });
